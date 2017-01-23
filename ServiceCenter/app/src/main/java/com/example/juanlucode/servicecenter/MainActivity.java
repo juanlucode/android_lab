@@ -13,6 +13,7 @@ public class MainActivity   extends
                                 View.OnClickListener {
 
     private Button btnNavegador;
+    private Button btnTelefono;
     private Intent intent;
 
     @Override
@@ -22,6 +23,9 @@ public class MainActivity   extends
 
         btnNavegador = (Button) this.findViewById(R.id.btnNavegador);
         btnNavegador.setOnClickListener(this);
+
+        btnTelefono = (Button) findViewById(R.id.btnTelefono);
+        btnTelefono.setOnClickListener(this);
     }
 
 
@@ -30,6 +34,13 @@ public class MainActivity   extends
         switch (v.getId()){
             case R.id.btnNavegador:
                 intent = new Intent(this, NavegadorActivity.class);
+                intent.putExtra("site", "www.google.es");
+                this.startActivity(intent);
+                break;
+
+            case R.id.btnTelefono:
+                intent = new Intent(this, TelefonoActivity.class);
+                intent.putExtra("phone", "924003262");
                 this.startActivity(intent);
                 break;
         }

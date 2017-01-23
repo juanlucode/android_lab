@@ -16,6 +16,7 @@ public class NavegadorActivity  extends
     private Button irButton;
     private EditText urlEditText;
     private Intent intent;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,10 @@ public class NavegadorActivity  extends
         irButton.setOnClickListener(this);
 
         urlEditText = (EditText) findViewById(R.id.urlEditText);
+
+        bundle = getIntent().getExtras();
+        urlEditText.setText(bundle.getString("site"));
+
     }
 
     @Override
@@ -33,7 +38,7 @@ public class NavegadorActivity  extends
         switch (v.getId()){
             case R.id.irButton:
                 intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(urlEditText.getText().toString()));
+                intent.setData(Uri.parse("http://".concat(urlEditText.getText().toString())));
                 startActivity(intent);
                 break;
         }

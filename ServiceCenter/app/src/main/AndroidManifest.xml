@@ -15,7 +15,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NavegadorActivity"></activity>
+        <activity android:name=".NavegadorActivity" />
+        <activity android:name=".TelefonoActivity"></activity>
     </application>
 
 </manifest>
