@@ -39,7 +39,7 @@ public class TelefonoActivity   extends
                 intent = new Intent();
                 // ACTION_CALL requiere permisos -> declararla en el manifiesto
                 // ACTION_DIAL no requiere permisos -> abre la app de teléfono (recomendado)
-                intent.setAction(intent.ACTION_DIAL);
+                intent.setAction(intent.ACTION_CALL);
                 intent.setData(Uri.parse("tel:".concat(telefonoEditText.getText().toString())));
                 try{
                     startActivity(intent);
