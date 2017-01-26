@@ -1,6 +1,8 @@
 package com.example.juanlucode.servicecenter;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -41,13 +43,19 @@ public class TelefonoActivity   extends
                 // ACTION_DIAL no requiere permisos -> abre la app de teléfono (recomendado)
                 intent.setAction(intent.ACTION_CALL);
                 intent.setData(Uri.parse("tel:".concat(telefonoEditText.getText().toString())));
-                try{
-                    startActivity(intent);
-                } catch (Exception ex){
-                    ex.printStackTrace();
-                }
-
+                if (checkPermission(Manifest.permission.CALL_PHONE))
+                    try{
+                        startActivity(intent);
+                    } catch (Exception ex){
+                        ex.printStackTrace();
+                    }
+                else Toast.makeText(this,"You declined the permission.").show();
                 break;
         }
+    }
+
+    private boolean checkPermission(String permission){
+        int result = this.checkCallingOrSelfPermission(permission);
+        return result == PackageManager.PERMISSION_GRANTED;
     }
 }
