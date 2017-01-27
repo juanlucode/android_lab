@@ -11,6 +11,7 @@
     tools:context="com.example.juanlucode.myform.Pantalla2Activity">
 
     <RadioGroup
+        android:id="@+id/opcionRadioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
