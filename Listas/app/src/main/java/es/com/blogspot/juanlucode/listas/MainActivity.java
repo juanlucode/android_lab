@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView listaListView;
     private List<String> nombres;
     private ArrayAdapter<String> arrayAdapter;
+    private MyAdapter myAdapter;
 
 
     @Override
@@ -42,10 +44,11 @@ public class MainActivity extends AppCompatActivity {
         nombres.add("Luis");
         nombres.add("Pilar");
 
-        arrayAdapter = new ArrayAdapter<String>
-                                        (this,android.R.layout.simple_list_item_1 ,nombres );
+        // arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1 ,nombres );
+        myAdapter = new MyAdapter(this,R.layout.lista_mejorada_layout, nombres);
 
-        listaListView.setAdapter(arrayAdapter);
+        //listaListView.setAdapter(arrayAdapter);
+        listaListView.setAdapter(myAdapter);
 
         listaListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -55,3 +58,4 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 }
+
