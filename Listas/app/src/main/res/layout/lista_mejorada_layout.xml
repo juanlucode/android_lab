@@ -27,4 +27,15 @@
         android:layout_marginLeft="31dp"
         android:layout_marginStart="31dp"
         android:id="@+id/nombreTextView" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/nombreTextView"
+        android:layout_toRightOf="@+id/nombreTextView"
+        android:layout_toEndOf="@+id/nombreTextView"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:id="@+id/parentescoTextView" />
 </RelativeLayout>
