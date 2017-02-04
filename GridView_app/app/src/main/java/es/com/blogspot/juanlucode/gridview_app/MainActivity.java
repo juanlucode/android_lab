@@ -2,9 +2,12 @@ package es.com.blogspot.juanlucode.gridview_app;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import java.util.ArrayList;
@@ -22,11 +25,13 @@ public class MainActivity extends AppCompatActivity {
         boolean ok = true;
         switch (item.getItemId()){
             case R.id.add_item:
+                ok = this.addItem(techs);
+                ((MyAdapter) rejillaGridView.getAdapter()).notifyDataSetChanged();
                 break;
             default:
                 ok = super.onOptionsItemSelected(item);
         }
-
+        return ok;
     }
 
     @Override
@@ -43,6 +48,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+
+        AdapterView.AdapterContextMenuInfo info;
+        info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        menu.setHeaderTitle(techs.get(info.position).getName());
+
+        inflater.inflate(R.menu.context_menu, menu);
+    }
+
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        boolean ok = true;
+        AdapterView.AdapterContextMenuInfo info;
+        info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        switch (item.getItemId()){
+            case R.id.del_item:
+                //item.setTitle(techs.get(info.position).getName());
+                ok = delItem(techs, info.position);
+                ((MyAdapter) rejillaGridView.getAdapter()).notifyDataSetChanged();
+            default:
+                ok = super.onContextItemSelected(item);
+        }
+        return ok;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -52,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         this.loadTechs(techs);
 
         rejillaGridView.setAdapter( new MyAdapter(this, R.layout.grid_layout, techs));
+        registerForContextMenu(rejillaGridView);
 
 
     }
@@ -76,5 +112,30 @@ public class MainActivity extends AppCompatActivity {
         struct.add(new Tech("Eclipse", "IDE"));
         struct.add(new Tech("FTP", "PROT"));
 
+    }
+
+    private boolean addItem(List<Tech> struct){
+        boolean ok = true;
+        try {
+            StringBuilder cadena = new StringBuilder("Tech #");
+            cadena.append(++this.cont);
+            struct.add(new Tech(cadena.toString(), "NEW"));
+
+        } catch (Exception ex){
+            ex.printStackTrace();
+            ok = false;
+        }
+        return ok;
+    }
+
+    private boolean delItem(List<Tech> struct, int item){
+        boolean ok = true;
+        try{
+            struct.remove(item);
+        } catch (Exception ex){
+            ex.printStackTrace();
+            ok = false;
+        }
+        return ok;
     }
 }

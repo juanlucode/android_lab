@@ -100,6 +100,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         MenuInflater menuInflater = getMenuInflater();
+
+        AdapterView.AdapterContextMenuInfo info;
+        info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        menu.setHeaderTitle(familia.get(info.position).getNombre());
+
         menuInflater.inflate(R.menu.menu_context_lista, menu);
     }
 
