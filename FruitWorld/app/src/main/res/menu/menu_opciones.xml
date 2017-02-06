@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/add_fruit"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="Nueva fruta"
+        app:showAsAction="ifRoom"
+        android:visible="true" />
+
+    <item android:id="@+id/gridViewItem"
+        android:icon="@android:drawable/ic_dialog_dialer"
+        android:title="Rejilla"
+        app:showAsAction="ifRoom"
+        android:visible="true"/>
+
+    <item android:id="@+id/listViewItem"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="Lista"
+        app:showAsAction="ifRoom"
+        android:visible="false" />
+</menu>
