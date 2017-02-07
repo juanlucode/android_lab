@@ -92,8 +92,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         frutasListView = (ListView) findViewById(R.id.frutasListView);
         frutasGridView = (GridView) findViewById(R.id.frutasGridView);
+
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
 
         frutas = new ArrayList<Fruta>();
         loadFruits(frutas);
