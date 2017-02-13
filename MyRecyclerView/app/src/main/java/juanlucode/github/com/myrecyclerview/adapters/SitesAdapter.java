@@ -1,13 +1,17 @@
-package juanlucode.github.com.myrecyclerview;
+package juanlucode.github.com.myrecyclerview.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import juanlucode.github.com.myrecyclerview.R;
+import juanlucode.github.com.myrecyclerview.models.Site;
 
 /**
  * Created by juanluis on 8/02/17.
@@ -23,16 +27,19 @@ public class SitesAdapter extends RecyclerView.Adapter<SitesAdapter.ViewHolder> 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView nameTextView;
         public TextView addressTextView;
+        public ImageView logoImageView;
 
         public ViewHolder(View site_item){
             super(site_item);
             nameTextView = (TextView) site_item.findViewById(R.id.nameTextView);
             addressTextView = (TextView) site_item.findViewById(R.id.addressTextView);
+            logoImageView = (ImageView) site_item.findViewById(R.id.logoImageView);
         }
 
         public void bind(final Site site, final OnItemClickListener listener){
             this.nameTextView.setText(site.getName());
             this.addressTextView.setText(site.getAddress());
+            this.logoImageView.setImageResource(site.getLogo());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
