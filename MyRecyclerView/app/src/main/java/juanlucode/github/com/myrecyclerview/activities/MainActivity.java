@@ -1,13 +1,19 @@
 package juanlucode.github.com.myrecyclerview.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -31,6 +37,33 @@ public class MainActivity extends AppCompatActivity {
             default:
                 ok = super.onOptionsItemSelected(item);
         }
+
+        return ok;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        //super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.context_menu, menu);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        String header = ((TextView) info.targetView.findViewById(R.id.nameTextView)).getText().toString();
+        menu.setHeaderTitle(header);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        boolean ok = true;
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch ( item.getItemId() ){
+            case R.id.del_site:
+                MainActivity.this.removeSite(info.position);
+                break;
+            default:
+                ok = super.onContextItemSelected(item);
+        }
+
+
 
         return ok;
     }
@@ -103,15 +136,21 @@ public class MainActivity extends AppCompatActivity {
         }));
         */
 
-        sitesRecyclerView.setAdapter(new SitesAdapter(sites,R.layout.site_cardview, new SitesAdapter.OnItemClickListener(){
+        sitesRecyclerView.setAdapter(new SitesAdapter(  MainActivity.this,
+                                                        sites,
+                                                        R.layout.site_cardview,
+                                                        new SitesAdapter.OnItemClickListener(){
             @Override
             public void onItemClick(Site site, int position) {
-                removeSite(position);
+                //removeSite(position);
+                MainActivity.this.openSite(site.getAddress());
             }
         }));
 
         sitesRecyclerView.setHasFixedSize(true);
         sitesRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        registerForContextMenu(sitesRecyclerView);
 
 
     }
@@ -119,5 +158,13 @@ public class MainActivity extends AppCompatActivity {
     private void removeSite(int position) {
         sites.remove(position);
         sitesRecyclerView.getAdapter().notifyItemRemoved(position);
+    }
+
+    private void openSite(String url){
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://".concat(url)));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+
     }
 }

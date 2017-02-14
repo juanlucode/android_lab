@@ -1,11 +1,14 @@
 package juanlucode.github.com.myrecyclerview.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +22,13 @@ import juanlucode.github.com.myrecyclerview.models.Site;
 
 public class SitesAdapter extends RecyclerView.Adapter<SitesAdapter.ViewHolder> {
 
+    private Context context;
     private ArrayList<Site> sites;
     private int layout;
     private OnItemClickListener itemClickListener;
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView nameTextView;
         public TextView addressTextView;
         public ImageView logoImageView;
@@ -39,7 +43,8 @@ public class SitesAdapter extends RecyclerView.Adapter<SitesAdapter.ViewHolder> 
         public void bind(final Site site, final OnItemClickListener listener){
             this.nameTextView.setText(site.getName());
             this.addressTextView.setText(site.getAddress());
-            this.logoImageView.setImageResource(site.getLogo());
+            Picasso.with(SitesAdapter.this.context).load(site.getLogo()).fit().into(this.logoImageView);
+            //this.logoImageView.setImageResource(site.getLogo());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -49,7 +54,11 @@ public class SitesAdapter extends RecyclerView.Adapter<SitesAdapter.ViewHolder> 
         }
     }
 
-    public SitesAdapter(List<Site> sites, int layout, OnItemClickListener itemClickListener){
+    public SitesAdapter(    Context context,
+                            List<Site> sites,
+                            int layout,
+                            OnItemClickListener itemClickListener){
+        this.context = context;
         this.sites = (ArrayList<Site>) sites;
         this.layout = layout;
         this.itemClickListener = itemClickListener;
