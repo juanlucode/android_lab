@@ -65,7 +65,7 @@ public class BoardAdapter extends BaseAdapter {
             viewHolder.dateTextView = (TextView) viewItem.findViewById(R.id.dateTextView);
             convertView.setTag(viewHolder);
         } else {
-            viewHolder = convertView.getTag();
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
         viewHolder.titleTextView.setText(boards.get(position).getTitle());

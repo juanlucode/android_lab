@@ -36,11 +36,9 @@ public final class MyApplication extends Application {
 
     private void setUpRealmConfig(){
         RealmConfiguration config = new RealmConfiguration
-                .Builder()
+                .Builder(getApplicationContext())
                 .deleteRealmIfMigrationNeeded()
                 .build();
-        Realm.setDefaultConfiguration(config);
-
     }
 
     private <T extends RealmObject> AtomicInteger getIdByTable(Realm realm, Class<T> anyClass){

@@ -9,14 +9,21 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import io.realm.Realm;
 import juanlucode.github.com.realmapp.R;
+import juanlucode.github.com.realmapp.models.Board;
 
 public class BoardActivity extends AppCompatActivity {
+
+    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.board_main);
+
+        realm = Realm.getDefaultInstance();
+
         showAddBoardDialog();
 
 
@@ -50,5 +57,9 @@ public class BoardActivity extends AppCompatActivity {
     }
 
     private void addBoard() {
+
+        realm.beginTransaction();
+        realm.copyToRealm(new Board("New Board"));
+        realm.commitTransaction();
     }
 }
