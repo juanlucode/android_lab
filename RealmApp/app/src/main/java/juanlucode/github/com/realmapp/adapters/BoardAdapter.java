@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import juanlucode.github.com.realmapp.R;
@@ -41,44 +42,47 @@ public class BoardAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+
         return this.boards.size();
     }
 
     @Override
     public Board getItem(int position) {
+
         return boards.get(position);
     }
 
     @Override
     public long getItemId(int id) {
+
         return id;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
-        if ( convertView == null){
+        if (convertView == null) {
             viewHolder = new ViewHolder();
-            View viewItem = (View) LayoutInflater.from(this.context).inflate(this.layout, null);
-            viewHolder.titleTextView = (TextView) viewItem.findViewById(R.id.titleEditText);
-            viewHolder.notesTextView = (TextView) viewItem.findViewById(R.id.notesTextView);
-            viewHolder.dateTextView = (TextView) viewItem.findViewById(R.id.dateTextView);
+            convertView = (View) LayoutInflater.from(this.context).inflate(this.layout, null);
+            viewHolder.titleTextView = (TextView) convertView.findViewById(R.id.titleTextView);
+            viewHolder.notesTextView = (TextView) convertView.findViewById(R.id.notesTextView);
+            viewHolder.dateTextView = (TextView) convertView.findViewById(R.id.dateTextView);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.titleTextView.setText(boards.get(position).getTitle());
-        int totalNotes = boards.size();
+        viewHolder.titleTextView.setText(this.boards.get(position).getTitle());
+        int totalNotes = boards.get(position).getNotes().size();
         StringBuilder stringNotes = new StringBuilder();
-        if (totalNotes == 1){
+        if (totalNotes == 1) {
             stringNotes.append(totalNotes).append(" note.");
         } else {
             stringNotes.append(totalNotes).append(" notes.");
         }
         viewHolder.notesTextView.setText(stringNotes.toString());
-        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
-        viewHolder.dateTextView.setText(dateFormat.format(boards.get(position)));
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        viewHolder.dateTextView.setText(dateFormat.format(boards.get(position).getCreateAt()));
 
         return convertView;
     }

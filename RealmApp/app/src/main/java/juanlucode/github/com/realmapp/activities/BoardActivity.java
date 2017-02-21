@@ -1,21 +1,29 @@
 package juanlucode.github.com.realmapp.activities;
 
 import android.content.DialogInterface;
-import android.support.annotation.StyleRes;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
 import juanlucode.github.com.realmapp.R;
+import juanlucode.github.com.realmapp.adapters.BoardAdapter;
 import juanlucode.github.com.realmapp.models.Board;
 
 public class BoardActivity extends AppCompatActivity {
 
     private Realm realm;
+
+    private ListView boardListView;
+    private RealmResults<Board> boardsRealmResults;
+    private FloatingActionButton addBoardFAB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +32,29 @@ public class BoardActivity extends AppCompatActivity {
 
         realm = Realm.getDefaultInstance();
 
-        showAddBoardDialog();
+
+        boardsRealmResults = realm.where(Board.class).findAll();
+
+        boardListView = (ListView) findViewById(R.id.boardListView);
+        boardListView.setAdapter(new BoardAdapter(  boardsRealmResults,
+                                                    R.layout.board_listview_item,
+                                                    this
+        ));
+
+        addBoardFAB = (FloatingActionButton) findViewById(R.id.addBoardFAB);
+        addBoardFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddBoardDialog();
+            }
+        });
+
+        boardsRealmResults.addChangeListener(new RealmChangeListener<RealmResults<Board>>() {
+            @Override
+            public void onChange(RealmResults<Board> element) {
+                ((BoardAdapter) boardListView.getAdapter()).notifyDataSetChanged();
+            }
+        });
 
 
     }
@@ -47,7 +77,7 @@ public class BoardActivity extends AppCompatActivity {
                                     "Title is required.", 
                                     Toast.LENGTH_SHORT).show();
                 } else {
-                    addBoard();
+                    addBoard(titleBoard);
                 }
             }
         });
@@ -56,10 +86,10 @@ public class BoardActivity extends AppCompatActivity {
 
     }
 
-    private void addBoard() {
+    private void addBoard(String title) {
 
         realm.beginTransaction();
-        realm.copyToRealm(new Board("New Board"));
+        realm.copyToRealm(new Board(title));
         realm.commitTransaction();
     }
 }

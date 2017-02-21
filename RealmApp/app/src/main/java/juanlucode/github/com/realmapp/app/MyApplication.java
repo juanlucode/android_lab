@@ -39,6 +39,7 @@ public final class MyApplication extends Application {
                 .Builder(getApplicationContext())
                 .deleteRealmIfMigrationNeeded()
                 .build();
+        Realm.setDefaultConfiguration(config);
     }
 
     private <T extends RealmObject> AtomicInteger getIdByTable(Realm realm, Class<T> anyClass){
