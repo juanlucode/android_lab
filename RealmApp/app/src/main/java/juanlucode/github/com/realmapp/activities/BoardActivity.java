@@ -1,11 +1,14 @@
 package juanlucode.github.com.realmapp.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -17,7 +20,9 @@ import juanlucode.github.com.realmapp.R;
 import juanlucode.github.com.realmapp.adapters.BoardAdapter;
 import juanlucode.github.com.realmapp.models.Board;
 
-public class BoardActivity extends AppCompatActivity {
+public class BoardActivity
+                            extends     AppCompatActivity
+                            implements  RealmChangeListener<RealmResults<Board>>{
 
     private Realm realm;
 
@@ -35,11 +40,20 @@ public class BoardActivity extends AppCompatActivity {
 
         boardsRealmResults = realm.where(Board.class).findAll();
 
+
         boardListView = (ListView) findViewById(R.id.boardListView);
         boardListView.setAdapter(new BoardAdapter(  boardsRealmResults,
                                                     R.layout.board_listview_item,
                                                     this
         ));
+        boardListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent notesIntent = new Intent(BoardActivity.this, NoteActivity.class);
+                notesIntent.putExtra("boardID", boardsRealmResults.get(position).getId());
+                startActivity(notesIntent);
+            }
+        });
 
         addBoardFAB = (FloatingActionButton) findViewById(R.id.addBoardFAB);
         addBoardFAB.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +76,7 @@ public class BoardActivity extends AppCompatActivity {
     private void showAddBoardDialog(){
         
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final View viewDialog = (View) getLayoutInflater().inflate(R.layout.add_board_dialog, null);
+        final View viewDialog = getLayoutInflater().inflate(R.layout.add_board_dialog, null);
         final EditText titleEditText = (EditText) viewDialog.findViewById(R.id.titleEditText);
         builder.setView(viewDialog);
         builder.setTitle("Adding new board...");
@@ -91,5 +105,11 @@ public class BoardActivity extends AppCompatActivity {
         realm.beginTransaction();
         realm.copyToRealm(new Board(title));
         realm.commitTransaction();
+    }
+
+
+    @Override
+    public void onChange(RealmResults<Board> element) {
+        ((BaseAdapter) boardListView.getAdapter()).notifyDataSetChanged();
     }
 }

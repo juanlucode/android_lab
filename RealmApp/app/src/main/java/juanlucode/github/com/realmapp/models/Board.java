@@ -2,8 +2,10 @@ package juanlucode.github.com.realmapp.models;
 
 import java.util.Date;
 
+import io.realm.RealmChangeListener;
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.RealmResults;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 import juanlucode.github.com.realmapp.app.MyApplication;
@@ -12,7 +14,9 @@ import juanlucode.github.com.realmapp.app.MyApplication;
  * Created by juanluis on 16/02/17.
  */
 
-public class Board extends RealmObject {
+public class Board
+                    extends
+                            RealmObject {
 
     @PrimaryKey
     private int             id;
@@ -57,4 +61,5 @@ public class Board extends RealmObject {
 
         return notes;
     }
+
 }
