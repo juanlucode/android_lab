@@ -15,8 +15,7 @@ import juanlucode.github.com.realmapp.app.MyApplication;
  */
 
 public class Board
-                    extends
-                            RealmObject {
+                    extends RealmObject {
 
     @PrimaryKey
     private int             id;

@@ -50,7 +50,8 @@ public class BoardActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent notesIntent = new Intent(BoardActivity.this, NoteActivity.class);
-                notesIntent.putExtra("boardID", boardsRealmResults.get(position).getId());
+                //notesIntent.putExtra("boardID", boardsRealmResults.get(position).getId());
+                notesIntent.putExtra("board");
                 startActivity(notesIntent);
             }
         });
